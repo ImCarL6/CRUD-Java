@@ -9,6 +9,8 @@ public class Crud extends javax.swing.JFrame {
     Cliente c;
     Conexao d = new Conexao();
     ClienteDAO dao;
+    String nome;
+    boolean pesquisar = false;
     private int codigo;
     
     public Crud() {
@@ -179,6 +181,7 @@ public class Crud extends javax.swing.JFrame {
     private void bNovoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bNovoActionPerformed
         
         atribuirCliente(new Cliente());
+        atualizarTabela();
         
     }//GEN-LAST:event_bNovoActionPerformed
 
@@ -208,6 +211,7 @@ public class Crud extends javax.swing.JFrame {
         
         DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
         
+        
         for (int i = modelo.getRowCount() - 1; i >= 0; i--){
             modelo.removeRow(i);
         }
@@ -223,6 +227,27 @@ public class Crud extends javax.swing.JFrame {
             });
         });
         
+          
+    }
+    
+    private void atualizarTabelaPesquisar(){
+        
+        DefaultTableModel modelo = (DefaultTableModel) jTable1.getModel();
+        
+        for (int i = modelo.getRowCount() - 1; i >= 0; i--){
+            modelo.removeRow(i);
+        }
+        
+        List<Cliente> clientes = dao.pesquisar(nome);
+        
+        clientes.forEach(c -> {
+            modelo.addRow(new Object[]{
+                c.getCodigo(),
+                c.getNome(),
+                c.getCpf(),
+                c.getNascimento()
+            });
+        });
     }
     
     private void bSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bSalvarActionPerformed
@@ -283,7 +308,15 @@ public class Crud extends javax.swing.JFrame {
     }//GEN-LAST:event_formMouseClicked
 
     private void bPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bPesquisarActionPerformed
-        // TODO add your handling code here:
+        
+        nome = txtNome.getText();
+        
+        if ("".equals(nome)){
+            JOptionPane.showMessageDialog(this, "Insira um nome para consultar", "Atenção", JOptionPane.INFORMATION_MESSAGE);
+        }
+        
+        atualizarTabelaPesquisar();
+       
     }//GEN-LAST:event_bPesquisarActionPerformed
 
    

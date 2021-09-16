@@ -76,6 +76,40 @@ public class ClienteDAO {
         return clientes;
     }
     
+    public List<Cliente> pesquisar(String nome){
+        
+        List<Cliente> clientes = new ArrayList<>();
+        
+        
+        try {
+            
+            Connection conexao = Conexao.conectar();
+            
+            String sql = "SELECT * FROM cliente WHERE nome LIKE ?";
+            
+            PreparedStatement stmt = conexao.prepareStatement(sql);
+            stmt.setString(1, "%" + nome + "%");
+            ResultSet rs = stmt.executeQuery();
+            
+            while (rs.next()){
+                
+                Cliente cliente = new Cliente();
+                cliente.setCodigo(rs.getInt("codigo"));
+                cliente.setNome(rs.getString("nome"));
+                cliente.setCpf(rs.getString("cpf"));
+                cliente.setNascimento(rs.getString("nascimento"));
+                clientes.add(cliente);
+            }
+            
+            Conexao.desconectar();
+            
+        } catch (SQLException e){
+        }
+        
+        
+        return clientes;
+    }
+    
     public Cliente obter(int codigo){
         
         try {
