@@ -22,7 +22,7 @@ public class ClienteDAO {
                 stmt.setString(1, c.getNome());
                 stmt.setString(2, c.getCpf());
                 stmt.setString(3, c.getNascimento());
-                stmt.execute();
+                stmt.executeUpdate();
 
             } else {
                 
@@ -33,7 +33,7 @@ public class ClienteDAO {
                 stmt.setString(2, c.getCpf());
                 stmt.setString(3, c.getNascimento());
                 stmt.setInt(4, c.getCodigo());
-                stmt.execute();
+                stmt.executeUpdate();
                 
             }
                 Conexao.desconectar();
@@ -153,7 +153,7 @@ public class ClienteDAO {
             
             PreparedStatement stmt = conexao.prepareStatement(sql);
             stmt.setInt(1, codigo);
-            stmt.execute();
+            stmt.executeUpdate();
             Conexao.desconectar();
             
             

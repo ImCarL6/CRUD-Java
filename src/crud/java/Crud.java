@@ -6,11 +6,10 @@ import javax.swing.table.DefaultTableModel;
 
 public class Crud extends javax.swing.JFrame {
     
-    Cliente c;
-    Conexao d = new Conexao();
-    ClienteDAO dao;
-    String nome;
-    boolean pesquisar = false;
+    private Cliente c;
+    private final Conexao d = new Conexao();
+    private final ClienteDAO dao;
+    private String nome;
     private int codigo;
     
     public Crud() {
@@ -185,7 +184,6 @@ public class Crud extends javax.swing.JFrame {
         
     }//GEN-LAST:event_bNovoActionPerformed
 
-    
     private void atribuirCliente(Cliente c){
         
         codigo = c.getCodigo();
@@ -226,8 +224,6 @@ public class Crud extends javax.swing.JFrame {
                 c.getNascimento()
             });
         });
-        
-          
     }
     
     private void atualizarTabelaPesquisar(){
@@ -282,6 +278,7 @@ public class Crud extends javax.swing.JFrame {
     private void bDeletarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bDeletarActionPerformed
         
         int linha = jTable1.getSelectedRow();
+        System.out.println(linha);
         
         if (linha != -1){
             int retorno = JOptionPane.showConfirmDialog(this, "Deseja realmente excluir?", "Atenção", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -319,7 +316,6 @@ public class Crud extends javax.swing.JFrame {
        
     }//GEN-LAST:event_bPesquisarActionPerformed
 
-   
     public static void main(String args[]) {
         
         java.awt.EventQueue.invokeLater(() -> {
