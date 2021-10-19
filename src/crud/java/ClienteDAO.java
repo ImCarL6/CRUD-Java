@@ -1,21 +1,24 @@
-
 package crud.java;
-import java.sql.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ClienteDAO {
-    
-    public String salvar(Cliente c){
-        
+
+    public String salvar(Cliente c) {
+
         String erro = "";
-        
+
         try {
-            
+
             Connection conexao = Conexao.conectar();
-            
-            if (c.getCodigo() == 0){
-            
+
+            if (c.getCodigo() == 0) {
+
                 String sql = "INSERT INTO cliente (nome, cpf, nascimento) VALUES (?, ?, ?) ";
 
                 PreparedStatement stmt = conexao.prepareStatement(sql);
@@ -25,41 +28,41 @@ public class ClienteDAO {
                 stmt.executeUpdate();
 
             } else {
-                
+
                 String sql = "UPDATE cliente SET nome = ?, cpf = ?, nascimento = ? WHERE codigo = ?";
-                
+
                 PreparedStatement stmt = conexao.prepareStatement(sql);
                 stmt.setString(1, c.getNome());
                 stmt.setString(2, c.getCpf());
                 stmt.setString(3, c.getNascimento());
                 stmt.setInt(4, c.getCodigo());
                 stmt.executeUpdate();
-                
+
             }
-                Conexao.desconectar();
-            
+            Conexao.desconectar();
+
         } catch (SQLException e) {
             erro = "Ocorreu um erro ao salvar" + e.getMessage();
         }
-        
+
         return erro;
     }
-    
-    public List<Cliente> todos(){
-        
+
+    public List<Cliente> todos() {
+
         List<Cliente> clientes = new ArrayList<>();
-        
+
         try {
-            
+
             Connection conexao = Conexao.conectar();
-            
+
             String sql = "SELECT * FROM cliente";
-            
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()){
-                
+
+            while (rs.next()) {
+
                 Cliente cliente = new Cliente();
                 cliente.setCodigo(rs.getInt("codigo"));
                 cliente.setNome(rs.getString("nome"));
@@ -67,32 +70,31 @@ public class ClienteDAO {
                 cliente.setNascimento(rs.getString("nascimento"));
                 clientes.add(cliente);
             }
-            
+
             Conexao.desconectar();
-            
-        } catch (SQLException e){
+
+        } catch (SQLException e) {
         }
-        
+
         return clientes;
     }
-    
-    public List<Cliente> pesquisar(String nome){
-        
+
+    public List<Cliente> pesquisar(String nome) {
+
         List<Cliente> clientes = new ArrayList<>();
-        
-        
+
         try {
-            
+
             Connection conexao = Conexao.conectar();
-            
+
             String sql = "SELECT * FROM cliente WHERE nome LIKE ?";
-            
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
             stmt.setString(1, "%" + nome + "%");
             ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()){
-                
+
+            while (rs.next()) {
+
                 Cliente cliente = new Cliente();
                 cliente.setCodigo(rs.getInt("codigo"));
                 cliente.setNome(rs.getString("nome"));
@@ -100,31 +102,30 @@ public class ClienteDAO {
                 cliente.setNascimento(rs.getString("nascimento"));
                 clientes.add(cliente);
             }
-            
+
             Conexao.desconectar();
-            
-        } catch (SQLException e){
+
+        } catch (SQLException e) {
         }
-        
-        
+
         return clientes;
     }
-    
-    public Cliente obter(int codigo){
-        
+
+    public Cliente obter(int codigo) {
+
         try {
-            
+
             Connection conexao = Conexao.conectar();
-            
+
             String sql = "SELECT * FROM cliente WHERE codigo = ?";
-            
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
             stmt.setInt(1, codigo);
-            
+
             ResultSet rs = stmt.executeQuery();
-            
-            while (rs.next()){
-                
+
+            while (rs.next()) {
+
                 Cliente cliente = new Cliente();
                 cliente.setCodigo(rs.getInt("codigo"));
                 cliente.setNome(rs.getString("nome"));
@@ -132,36 +133,35 @@ public class ClienteDAO {
                 cliente.setNascimento(rs.getString("nascimento"));
                 return cliente;
             }
-            
+
             Conexao.desconectar();
-            
+
         } catch (SQLException e) {
         }
-        
+
         return null;
     }
-    
-    public String excluir(int codigo){
-        
+
+    public String excluir(int codigo) {
+
         String erro = "";
-        
+
         try {
-            
+
             Connection conexao = Conexao.conectar();
-            
+
             String sql = "DELETE FROM cliente WHERE codigo = ?";
-            
+
             PreparedStatement stmt = conexao.prepareStatement(sql);
             stmt.setInt(1, codigo);
             stmt.executeUpdate();
             Conexao.desconectar();
-            
-            
-        } catch (SQLException e){
+
+        } catch (SQLException e) {
             erro = "Ocorreu um erro ao excluir" + e.getMessage();
         }
-        
+
         return erro;
     }
-    
+
 }
